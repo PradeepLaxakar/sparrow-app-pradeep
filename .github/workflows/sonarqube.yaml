@@ -45,7 +45,7 @@ jobs:
         with:
           sonar_token: ${{ secrets.SONAR_TOKEN }}
           sonar_host_url: ${{ secrets.SONAR_HOST_URL }}
-          sonar_projectkey: ${{ secrets.SONAR_PROJECT_KEY }}
+          sonar_projectkey: ${{ github.event.repository.name }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repo_name: ${{ github.repository }}
           pr_number: ${{ github.event.pull_request.number }}
@@ -90,17 +90,17 @@ jobs:
 #       #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 #       #     SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} #OPTIONAL
 
-#       # #PR Decoration
-#       - name: SonarQube Pull Request Comment
-#         if: always()
-#         uses: campos-pay/sonarqube-pr-comment@main
-#         with:
-#           sonar_token: ${{ secrets.SONAR_TOKEN }}
-#           sonar_host_url: ${{ secrets.SONAR_HOST_URL }}
-#           sonar_projectkey: ${{ github.event.repository.name }}
-#           github-token: ${{ secrets.GITHUB_TOKEN }}
-#           repo_name: ${{ github.repository }}
-#           pr_number: ${{ github.event.pull_request.number }}
+      # # #PR Decoration
+      # - name: SonarQube Pull Request Comment
+      #   if: always()
+      #   uses: campos-pay/sonarqube-pr-comment@main
+      #   with:
+      #     sonar_token: ${{ secrets.SONAR_TOKEN }}
+      #     sonar_host_url: ${{ secrets.SONAR_HOST_URL }}
+      #     sonar_projectkey: ${{ github.event.repository.name }}
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     repo_name: ${{ github.repository }}
+      #     pr_number: ${{ github.event.pull_request.number }}
 
 
 # ========================= ORIGINAL WORKFLOW ================================================
