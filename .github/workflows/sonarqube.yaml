@@ -65,17 +65,17 @@ jobs:
         with:
           svgFrom: sonarqube
 
-      # # Commit badges and push to the current branch
-      # - name: Commit and push badges
-      #   run: |
-      #     git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      #     git config --local user.name "github-actions[bot]"
-      #     git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
-      #     git add .badges
-      #     if ! git diff-index --quiet HEAD --; then
-      #       git commit -m "chore: generate badges on $GITHUB_SHA" -q
-      #       git push origin HEAD:${{ github.ref_name }} # Pushes to the current branch
-      #     fi        
+      # Commit badges and push to the current branch
+      - name: Commit and push badges
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          git add .badges
+          if ! git diff-index --quiet HEAD --; then
+            git commit -m "chore: generate badges on $GITHUB_SHA" -q
+            git push origin HEAD:${{ github.ref_name }} # Pushes to the current branch
+          fi        
 
 # ========================= ORIGINAL WORKFLOW ================================================
 # on:
