@@ -64,8 +64,8 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
           SONAR_PROJECT: ${{ vars.SONAR_PROJECT_KEY }}   
-        # with:
-        #   svgFrom: sonarqube
+        with:
+          svgFrom: sonarqube
 
 # ========================= ORIGINAL WORKFLOW ================================================
 # on:
