@@ -1,10 +1,6 @@
 name: Sonarqube
 
-on:
-  # push:
-  #   branches:
-  #     - development
-      
+on:    
   pull_request:
     types: [opened, synchronize, reopened]
     branches:
@@ -26,6 +22,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          ref:  ${{ github.head_ref || github.ref }} # Checks out the correct branch in case of a pull request or manual trigger. For Step - # SonarQube Badge + Comment on PR    
 
       - uses: sonarsource/sonarqube-scan-action@master
         env:
@@ -67,6 +64,18 @@ jobs:
           SONAR_PROJECT_BADGE_TOKEN: ${{ secrets.SONAR_TOKEN }}
         # with:
         #   svgFrom: sonarqube
+
+      # Commit badges and push to the current branch
+      - name: Commit and push badges
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          git add .badges
+          if ! git diff-index --quiet HEAD --; then
+            git commit -m "chore: generate badges on $GITHUB_SHA" -q
+            git push origin HEAD:${{ github.ref_name }} # Pushes to the current branch
+          fi        
 
 # ========================= ORIGINAL WORKFLOW ================================================
 # on:
