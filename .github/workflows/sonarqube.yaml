@@ -62,8 +62,8 @@ jobs:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
           SONAR_PROJECT: ${{ vars.SONAR_PROJECT_KEY }}   
           SONAR_PROJECT_BADGE_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        # with:
-        #   svgFrom: sonarqube
+        with:
+          svgFrom: sonarqube
 
       # # Commit badges and push to the current branch
       # - name: Commit and push badges
