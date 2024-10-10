@@ -50,6 +50,41 @@ jobs:
           repo_name: ${{ github.repository }}
           pr_number: ${{ github.event.pull_request.number }}
 
+      # Generate Badges
+      - name: Generate SonarQube Badges
+        run: |
+          # Call the badge generation script
+          bash ${GITHUB_ACTION_PATH}/badge.svg.sonarqube.sh
+
+      # Set outputs
+      - name: Set Badge Outputs
+        id: result
+        run: |
+          echo 'list<<EOF' >> $GITHUB_OUTPUT
+          bash ${GITHUB_ACTION_PATH}/print-result.sh list >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
+
+          echo 'markdown<<EOF' >> $GITHUB_OUTPUT
+          bash ${GITHUB_ACTION_PATH}/print-result.sh markdown >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
+
+      # Post Badges as Comment
+      - name: Post Badges on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { markdown } = process.env;
+            await github.rest.issues.createComment({
+              owner: context.payload.repository.owner.login,
+              repo: context.payload.repository.name,
+              issue_number: context.payload.pull_request.number,
+              body: markdown
+            });
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          markdown: ${{ steps.result.outputs.markdown }}
+                    
 # ========================= ORIGINAL WORKFLOW ================================================
 # on:
 #   push:
