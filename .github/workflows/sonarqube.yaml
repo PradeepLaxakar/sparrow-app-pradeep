@@ -43,18 +43,28 @@ jobs:
       #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       #     SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} # OPTIONAL
 
-      # PR Decoration
-      - name: SonarQube Pull Request Comment
-        if: always()
-        uses: campos-pay/sonarqube-pr-comment@main
-        with:
-          sonar_token: ${{ secrets.SONAR_TOKEN }}
-          sonar_host_url: ${{ secrets.SONAR_HOST_URL }}
-          sonar_projectkey: ${{ vars.SONAR_PROJECT_KEY }} #github.event.repository.name
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          repo_name: ${{ github.repository }}
-          pr_number: ${{ github.event.pull_request.number }}
+      # # PR Decoration
+      # - name: SonarQube Pull Request Comment
+      #   if: always()
+      #   uses: campos-pay/sonarqube-pr-comment@main
+      #   with:
+      #     sonar_token: ${{ secrets.SONAR_TOKEN }}
+      #     sonar_host_url: ${{ secrets.SONAR_HOST_URL }}
+      #     sonar_projectkey: ${{ vars.SONAR_PROJECT_KEY }} #github.event.repository.name
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     repo_name: ${{ github.repository }}
+      #     pr_number: ${{ github.event.pull_request.number }}
 
+      # SonarQube Badge + Comment on PR    
+      - name: badge action
+        uses: jadewon/sonar-badge@v1
+        id: badge
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          SONAR_PROJECT: ${{ vars.SONAR_PROJECT_KEY }}   
+                 
 # ========================= ORIGINAL WORKFLOW ================================================
 # on:
 #   push:
