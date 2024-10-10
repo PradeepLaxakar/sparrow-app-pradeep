@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions: # permission to comment a PR
-      contents: read
+      contents: write #read
       pull-requests: write
 
     steps:
