@@ -1,6 +1,6 @@
 name: Sonarqube
 
-on:    
+on:
   pull_request:
     types: [opened, synchronize, reopened]
     branches:
@@ -10,19 +10,17 @@ on:
 
 jobs:
   build:
-
     name: Build
     runs-on: ubuntu-latest
 
     permissions: # permission to comment a PR
-      contents: write #read
+      contents: read
       pull-requests: write
 
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-          ref:  ${{ github.head_ref || github.ref }} # Checks out the correct branch in case of a pull request or manual trigger. For Step - # SonarQube Badge + Comment on PR    
 
       - uses: sonarsource/sonarqube-scan-action@master
         env:
@@ -40,42 +38,17 @@ jobs:
       #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       #     SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} # OPTIONAL
 
-      # # PR Decoration
-      # - name: SonarQube Pull Request Comment
-      #   if: always()
-      #   uses: campos-pay/sonarqube-pr-comment@main
-      #   with:
-      #     sonar_token: ${{ secrets.SONAR_TOKEN }}
-      #     sonar_host_url: ${{ secrets.SONAR_HOST_URL }}
-      #     sonar_projectkey: ${{ vars.SONAR_PROJECT_KEY }} #github.event.repository.name
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     repo_name: ${{ github.repository }}
-      #     pr_number: ${{ github.event.pull_request.number }}
-
-      # SonarQube Badge + Comment on PR    
-      - name: badge action
-        uses: jadewon/sonar-badge@v1
-        id: badge
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-          SONAR_PROJECT: ${{ vars.SONAR_PROJECT_KEY }}   
-          SONAR_PROJECT_BADGE_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      # PR Decoration
+      - name: SonarQube Pull Request Comment
+        if: always()
+        uses: campos-pay/sonarqube-pr-comment@main
         with:
-          svgFrom: sonarqube
-
-      # Commit badges and push to the current branch
-      - name: Commit and push badges
-        run: |
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
-          git add .badges
-          if ! git diff-index --quiet HEAD --; then
-            git commit -m "chore: generate badges on $GITHUB_SHA" -q
-            git push origin HEAD:${{ github.ref_name }} # Pushes to the current branch
-          fi        
+          sonar_token: ${{ secrets.SONAR_TOKEN }}
+          sonar_host_url: ${{ secrets.SONAR_HOST_URL }}
+          sonar_projectkey: ${{ vars.SONAR_PROJECT_KEY }} #github.event.repository.name
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repo_name: ${{ github.repository }}
+          pr_number: ${{ github.event.pull_request.number }}
 
 # ========================= ORIGINAL WORKFLOW ================================================
 # on:
