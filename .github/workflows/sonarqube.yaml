@@ -49,47 +49,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repo_name: ${{ github.repository }}
           pr_number: ${{ github.event.pull_request.number }}
-
-      # Set executable permission for badge generation script
-      - name: Set Executable Permission
-        run: |
-          chmod +x .github/workflows/sonarqube-pr-decoration/badge.svg.sonarqube.sh
-
-      # Generate Badges
-      - name: Generate SonarQube Badges
-        run: |
-          # Call the badge generation script
-          bash .github/workflows/sonarqube-pr-decoration/badge.svg.sonarqube.sh
-
-      # Set outputs
-      - name: Set Badge Outputs
-        id: result
-        run: |
-          echo 'list<<EOF' >> $GITHUB_OUTPUT
-          bash .github/workflows/sonarqube-pr-decoration/print-result.sh list >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT
-
-          echo 'markdown<<EOF' >> $GITHUB_OUTPUT
-          bash .github/workflows/sonarqube-pr-decoration/print-result.sh markdown >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT
-
-      # Post Badges as Comment
-      - name: Post Badges on PR
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const { markdown } = process.env;
-            await github.rest.issues.createComment({
-              owner: context.payload.repository.owner.login,
-              repo: context.payload.repository.name,
-              issue_number: context.payload.pull_request.number,
-              body: markdown
-            });
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          markdown: ${{ steps.result.outputs.markdown }}
-                                        
+          
 # ========================= ORIGINAL WORKFLOW ================================================
 # on:
 #   push:
