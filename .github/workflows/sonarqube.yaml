@@ -54,18 +54,18 @@ jobs:
       - name: Generate SonarQube Badges
         run: |
           # Call the badge generation script
-          bash ${GITHUB_ACTION_PATH}/badge.svg.sonarqube.sh
+          bash .github/workflows/sonarqube-pr-decoration/badge.svg.sonarqube.sh
 
       # Set outputs
       - name: Set Badge Outputs
         id: result
         run: |
           echo 'list<<EOF' >> $GITHUB_OUTPUT
-          bash ${GITHUB_ACTION_PATH}/print-result.sh list >> $GITHUB_OUTPUT
+          bash .github/workflows/sonarqube-pr-decoration/print-result.sh list >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
 
           echo 'markdown<<EOF' >> $GITHUB_OUTPUT
-          bash ${GITHUB_ACTION_PATH}/print-result.sh markdown >> $GITHUB_OUTPUT
+          bash .github/workflows/sonarqube-pr-decoration/print-result.sh markdown >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
 
       # Post Badges as Comment
@@ -84,7 +84,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           markdown: ${{ steps.result.outputs.markdown }}
-                    
+                              
 # ========================= ORIGINAL WORKFLOW ================================================
 # on:
 #   push:
