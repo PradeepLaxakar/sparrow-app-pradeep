@@ -63,9 +63,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-          SONAR_PROJECT: ${{ vars.SONAR_PROJECT_KEY }}   
-        # with:
-        #   svgFrom: sonarqube
+          SONAR_PROJECT: Sparrow-test #{{ vars.SONAR_PROJECT_KEY }}   
+        with:
+          svgFrom: sonarqube
 
 # ========================= ORIGINAL WORKFLOW ================================================
 # on:
