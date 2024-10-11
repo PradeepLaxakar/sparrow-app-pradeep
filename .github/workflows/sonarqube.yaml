@@ -73,7 +73,7 @@ jobs:
       - uses: phwt/sonarqube-quality-gate-action@v1
         id: quality-gate-check
         with:
-          sonar-project-key: ${{ vars.PROJECT_KEY }}
+          sonar-project-key: ${{ vars.SONAR_PROJECT_KEY }}
           sonar-host-url: ${{ secrets.SONAR_HOST_URL }}
           sonar-token: ${{ secrets.SONAR_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }} #PR_GITHUB_TOKEN
